@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     }
     
     // Broadcast to all clients
-    io.emit('drowsiness_update', historyItem);
+    io.emit('drowsiness_update', data);
     io.emit('history', drowsinessHistory);
   });
   

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useCallback, useRef } from 'react';
 import io from 'socket.io-client';
 
 // Create context
@@ -15,6 +15,14 @@ export const DrowsinessProvider = ({ children }) => {
   const [earScore, setEarScore] = useState(0);
   const [history, setHistory] = useState([]);
   const [alertCount, setAlertCount] = useState(0);
+  const alertAudioRef = useRef(null);
+  const previousDrowsyState = useRef(false);
+
+  // Initialize audio
+  useEffect(() => {
+    alertAudioRef.current = new Audio('/audio/wake_up.wav');
+    alertAudioRef.current.volume = 0.7;
+  }, []);
 
   // Initialize socket connection
   useEffect(() => {
@@ -47,15 +55,23 @@ export const DrowsinessProvider = ({ children }) => {
       setIsDrowsy(data.isDrowsy);
       setEarScore(data.score);
       
+      // Set the current frame if available
+      if (data.frame) {
+        setCurrentFrame(data.frame);
+      }
+      
       // Increment alert count if drowsy
       if (data.isDrowsy) {
         setAlertCount(prev => prev + 1);
+        
+        // Play alert sound when becoming drowsy
+        if (!previousDrowsyState.current && alertAudioRef.current) {
+          alertAudioRef.current.play().catch(err => console.log('Audio play error:', err));
+        }
       }
-    });
-    
-    // Listen for video frame updates
-    socket.on('frame', (frameData) => {
-      setCurrentFrame(frameData);
+      
+      // Update previous state
+      previousDrowsyState.current = data.isDrowsy;
     });
     
     // Listen for history updates
@@ -65,7 +81,6 @@ export const DrowsinessProvider = ({ children }) => {
     
     return () => {
       socket.off('drowsiness_update');
-      socket.off('frame');
       socket.off('history');
     };
   }, [socket]);

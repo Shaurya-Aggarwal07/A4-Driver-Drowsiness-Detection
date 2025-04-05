@@ -5,10 +5,10 @@ const VideoFeed = () => {
   const { currentFrame, connected, isDrowsy } = useContext(DrowsinessContext);
   const imgRef = useRef(null);
 
-  // Update the image source when new frame arrives
+  // Debug the frame data
   useEffect(() => {
-    if (imgRef.current && currentFrame) {
-      imgRef.current.src = currentFrame;
+    if (currentFrame) {
+      console.log("Frame received, length:", currentFrame.length);
     }
   }, [currentFrame]);
 
@@ -18,12 +18,22 @@ const VideoFeed = () => {
       
       <div className="video-container relative">
         {connected ? (
-          <img 
-            ref={imgRef}
-            className="video-feed"
-            src={currentFrame || "https://via.placeholder.com/640x480?text=Waiting+for+video+feed..."} 
-            alt="Driver monitoring"
-          />
+          currentFrame ? (
+            <img 
+              className="video-feed w-full h-auto"
+              src={currentFrame}
+              alt="Driver monitoring"
+            />
+          ) : (
+            <div className="flex items-center justify-center h-80 bg-gray-200 rounded-lg">
+              <div className="text-center p-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <p className="text-gray-600">Waiting for camera feed...</p>
+              </div>
+            </div>
+          )
         ) : (
           <div className="flex items-center justify-center h-80 bg-gray-200 rounded-lg">
             <div className="text-center p-6">

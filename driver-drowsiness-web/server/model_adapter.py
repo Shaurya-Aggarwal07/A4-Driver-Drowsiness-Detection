@@ -115,6 +115,9 @@ def detect_drowsiness():
             _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
             img_base64 = base64.b64encode(buffer).decode('utf-8')
             
+            # Print frame size for debugging
+            print(f"Frame size: {len(img_base64)} bytes")
+            
             # Send data to server
             sio.emit('drowsiness', {
                 'isDrowsy': is_drowsy,
