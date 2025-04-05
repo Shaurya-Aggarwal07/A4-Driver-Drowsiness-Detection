@@ -30,31 +30,31 @@ const Stats = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div className="card bg-white">
-        <div className="text-xs uppercase font-semibold text-gray-500 mb-2">Detection Count</div>
-        <div className="text-2xl font-bold">{history.length}</div>
-        <div className="text-sm text-gray-500 mt-1">Total data points</div>
+      <div className="card">
+        <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-2">Detection Count</div>
+        <div className="text-2xl font-bold text-text-light dark:text-text-dark">{history.length}</div>
+        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">Total data points</div>
       </div>
       
-      <div className="card bg-white">
-        <div className="text-xs uppercase font-semibold text-gray-500 mb-2">Drowsy Events</div>
+      <div className="card">
+        <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-2">Drowsy Events</div>
         <div className="text-2xl font-bold text-alert-red">{stats.drowsyCount}</div>
-        <div className="text-sm text-gray-500 mt-1">Times drowsiness detected</div>
+        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">Times drowsiness detected</div>
       </div>
       
-      <div className="card bg-white">
-        <div className="text-xs uppercase font-semibold text-gray-500 mb-2">Average EAR</div>
-        <div className="text-2xl font-bold">{stats.avgEarScore}</div>
-        <div className="text-sm text-gray-500 mt-1">Eye aspect ratio</div>
+      <div className="card">
+        <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-2">Average EAR</div>
+        <div className="text-2xl font-bold text-text-light dark:text-text-dark">{stats.avgEarScore}</div>
+        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">Eye aspect ratio</div>
       </div>
       
-      <div className="card bg-white">
-        <div className="text-xs uppercase font-semibold text-gray-500 mb-2">Alert Percentage</div>
+      <div className="card">
+        <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-2">Alert Percentage</div>
         <div className="flex items-end gap-2">
           <div className="text-2xl font-bold text-safe-green">{100 - stats.drowsyPercentage}%</div>
           <div className="text-base text-alert-red">{stats.drowsyPercentage}%</div>
         </div>
-        <div className="text-sm text-gray-500 mt-1">Alert vs drowsy ratio</div>
+        <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">Alert vs drowsy ratio</div>
       </div>
     </div>
   );

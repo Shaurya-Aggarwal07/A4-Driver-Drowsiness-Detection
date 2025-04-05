@@ -14,6 +14,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { format } from 'date-fns';
 import { DrowsinessContext } from '../context/DrowsinessContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 // Register ChartJS components
 ChartJS.register(
@@ -30,6 +31,7 @@ ChartJS.register(
 
 const EarChart = () => {
   const { history } = useContext(DrowsinessContext);
+  const { isDarkMode } = useContext(ThemeContext);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: []
@@ -51,7 +53,9 @@ const EarChart = () => {
           label: 'EAR Score',
           data: earScores,
           borderColor: 'rgb(0, 122, 255)',
-          backgroundColor: 'rgba(0, 122, 255, 0.1)',
+          backgroundColor: isDarkMode 
+            ? 'rgba(0, 122, 255, 0.2)' 
+            : 'rgba(0, 122, 255, 0.1)',
           tension: 0.3,
           fill: true
         },
@@ -66,7 +70,7 @@ const EarChart = () => {
         }
       ]
     });
-  }, [history]);
+  }, [history, isDarkMode]);
 
   const options = {
     responsive: true,
@@ -74,6 +78,9 @@ const EarChart = () => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: isDarkMode ? '#FFFFFF' : '#1C1C1E'
+        }
       },
       tooltip: {
         mode: 'index',
@@ -86,13 +93,27 @@ const EarChart = () => {
         max: 0.5,
         title: {
           display: true,
-          text: 'EAR Score'
+          text: 'EAR Score',
+          color: isDarkMode ? '#FFFFFF' : '#1C1C1E'
+        },
+        grid: {
+          color: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+        },
+        ticks: {
+          color: isDarkMode ? '#AEAEB2' : '#6C6C70'
         }
       },
       x: {
         title: {
           display: true,
-          text: 'Time'
+          text: 'Time',
+          color: isDarkMode ? '#FFFFFF' : '#1C1C1E'
+        },
+        grid: {
+          color: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+        },
+        ticks: {
+          color: isDarkMode ? '#AEAEB2' : '#6C6C70'
         }
       }
     },
@@ -114,32 +135,32 @@ const EarChart = () => {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold mb-4">EAR Score Monitoring</h2>
+      <h2 className="text-xl font-semibold mb-4 text-text-light dark:text-text-dark">EAR Score Monitoring</h2>
       
-      <div className="bg-white rounded-lg p-4" style={{ height: '300px' }}>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-4" style={{ height: '300px' }}>
         {history.length > 0 ? (
           <Line data={chartData} options={options} />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-text-secondary-light dark:text-text-secondary-dark">
             <p>Waiting for EAR data...</p>
           </div>
         )}
       </div>
       
       <div className="mt-4 grid grid-cols-2 gap-4">
-        <div className="bg-gray-100 p-3 rounded-lg">
-          <div className="text-xs uppercase font-semibold text-gray-500 mb-1">Alert Threshold</div>
+        <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+          <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">Alert Threshold</div>
           <div className="flex items-center">
             <div className="h-3 w-3 bg-safe-green rounded-full mr-2"></div>
-            <span>EAR &gt; 0.25</span>
+            <span className="text-text-light dark:text-text-dark">EAR &gt; 0.25</span>
           </div>
         </div>
         
-        <div className="bg-gray-100 p-3 rounded-lg">
-          <div className="text-xs uppercase font-semibold text-gray-500 mb-1">Drowsy Threshold</div>
+        <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+          <div className="text-xs uppercase font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">Drowsy Threshold</div>
           <div className="flex items-center">
             <div className="h-3 w-3 bg-alert-red rounded-full mr-2"></div>
-            <span>EAR &lt; 0.25</span>
+            <span className="text-text-light dark:text-text-dark">EAR &lt; 0.25</span>
           </div>
         </div>
       </div>
